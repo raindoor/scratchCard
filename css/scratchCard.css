@@ -1,0 +1,65 @@
+#panel{
+  width: 500px;
+  height: 500px;
+  border: 1px solid #000;
+}
+.cardArea{
+  width: 100px;
+  height: 125px;
+  display: inline-block;
+}
+
+#centerCardArea{
+  width: 125px;
+  height: 125px;
+  border: 1px solid #000;
+  display: block;
+  margin: 188px auto;
+  line-height: 125px;
+  font-size: 50px;
+  text-align: center;
+}
+
+/*.card1{background-image: url("../image/1.png")}
+.card2{background-image: url("../image/2.png")}
+.card3{background-image: url("../image/3.png")}
+.card4{background-image: url("../image/4.png")}
+.card5{background-image: url("../image/5.png")}
+.card6{background-image: url("../image/6.png")}
+.card7{background-image: url("../image/7.png")}
+.card8{background-image: url("../image/8.png")}
+.card9{background-image: url("../image/9.png")}*/
+
+.cardImageDiv{
+  border: 1px solid #000;
+  border-radius: 5px;
+  width: 100px;
+  height: 125px;
+  line-height: 125px;
+  font-size: 50px;
+  text-align: center;
+  display: block;
+  background-size: 100%;
+  position: absolute;
+  z-index: 1;
+
+}
+
+.topCard     {top: 50px; left: 209px;}
+.leftCard    {top: 200px; left: 62px; }
+.rightCard   {top: 200px; left: 356px;}
+.bottomCard  {top: 346px; left: 209px;}
+
+.cardClickArea{
+  width: 100px;
+  height: 125px;
+  display: block;
+  position: absolute;
+  background-color: #aaf;
+  opacity: 0.4;
+  z-index: 2;
+}
+
+#errorArea{
+  font-size: 40px;
+}
