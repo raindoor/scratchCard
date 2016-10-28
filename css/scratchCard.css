@@ -20,16 +20,6 @@
   text-align: center;
 }
 
-/*.card1{background-image: url("../image/1.png")}
-.card2{background-image: url("../image/2.png")}
-.card3{background-image: url("../image/3.png")}
-.card4{background-image: url("../image/4.png")}
-.card5{background-image: url("../image/5.png")}
-.card6{background-image: url("../image/6.png")}
-.card7{background-image: url("../image/7.png")}
-.card8{background-image: url("../image/8.png")}
-.card9{background-image: url("../image/9.png")}*/
-
 .cardImageDiv{
   border: 1px solid #000;
   border-radius: 5px;
@@ -62,4 +52,19 @@
 
 #errorArea{
   font-size: 40px;
+}
+#stackArea{
+  font-size: 40px;
+}
+
+.timerController{
+  display: inline-block;
+  background-color: #f0d000;
+  width: 100px;
+  margin: 0 10px;
+  height: 100px;
+  line-height: 100px;
+  font-size: 40px;
+  text-align: center;
+  cursor: pointer;
 }

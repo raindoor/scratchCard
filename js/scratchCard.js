@@ -27,25 +27,8 @@ function init(){
   generate('bottom');
 
   $('#centerCardArea').text(0);
-  $('#errorArea').text(0);
-  $(".cardClickArea").on("tap",function(){
-    var dir;
-    if($(this).hasClass('topCard'))         { dir = 'top'; }
-    else if($(this).hasClass('leftCard'))   { dir = 'left'; }
-    else if($(this).hasClass('rightCard'))  { dir = 'right'; }
-    else if($(this).hasClass('bottomCard')) { dir = 'bottom'; }
-
-    doMoveIfAble(dir);
-  });
-  // $('.cardClickArea').click(function(){
-  //   var dir;
-  //   if($(this).hasClass('topCard'))         { dir = 'top'; }
-  //   else if($(this).hasClass('leftCard'))   { dir = 'left'; }
-  //   else if($(this).hasClass('rightCard'))  { dir = 'right'; }
-  //   else if($(this).hasClass('bottomCard')) { dir = 'bottom'; }
-  //
-  //   doMoveIfAble(dir);
-  // });
+  $(".cardClickArea").on("tap",cardClickListener);
+  $('.cardClickArea').click(cardClickListener);
 
   $('body').keydown(function(e){
     e.preventDefault();
@@ -63,6 +46,16 @@ function init(){
           doMoveIfAble('bottom');
     }
   });
+  initTimer();
+}
+function cardClickListener(){
+  var dir;
+  if($(this).hasClass('topCard'))         { dir = 'top'; }
+  else if($(this).hasClass('leftCard'))   { dir = 'left'; }
+  else if($(this).hasClass('rightCard'))  { dir = 'right'; }
+  else if($(this).hasClass('bottomCard')) { dir = 'bottom'; }
+
+  doMoveIfAble(dir);
 }
 
 function generate(dir){
@@ -84,11 +77,13 @@ function getRanNum(start, end){
 }
 
 function addScore(){
+  $('#stackCount').text(parseInt($('#stackCount').text())+1);
   $('#centerCardArea').text(parseInt($('#centerCardArea').text())+1);
 }
 
 function addError(){
-  $('#errorArea').text(parseInt($('#errorArea').text())+1);
+  $('#errorCount').text(parseInt($('#errorCount').text())+1);
+  $('#centerCardArea').text(0);
 }
 
 function isDisabled(dir){
@@ -143,3 +138,40 @@ function decCardNum(num){
     curCardNums[i] -= num;
   }
 }
+
+
+// var seconds = 0, minutes = 0, hours = 0, timerEvent;
+//
+// function addSecond() {
+//   seconds++;
+//   if (seconds >= 60) {
+//       seconds = 0;
+//       minutes++;
+//       if (minutes >= 60) {
+//           minutes = 0;
+//           hours++;
+//       }
+//   }
+//   var textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" +
+//                     (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
+//                     (seconds > 9 ? seconds : "0" + seconds);
+//   setTimer(textContent);
+//   console.log(textContent);
+//   startTimer();
+// }
+// function startTimer() {
+//   console.log("asdf");
+//   timerEvent = setTimeout(addSecond, 1000);
+// }
+// function initTimer(){
+//   $('#startTimer').click(startTimer);
+//   $('#stopTimer').click(function(){ clearTimeout(timerEvent); });
+//   $('#clearTimer').click(function() {
+//     clearTimeout(timerEvent);
+//     setTimer("00:00:00");
+//     seconds = 0; minutes = 0; hours = 0;
+//   });
+// }
+// function setTimer(string){
+//   $('#timer time').text(string);
+// }
