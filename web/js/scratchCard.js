@@ -6,6 +6,10 @@ var curCardNums;
 var disableTime;
 var gameMode;
 var errorCnt;
+var remain;
+
+// 게임 작동에 관한 모드 설정
+
 
 $(function(){
   init();
@@ -18,8 +22,9 @@ function init(){
   disabled = new Array();
   curCardNums = new Array();
   disableTime = 100;
-  gameMode = 's';
+  gameMode = 'on';
   errorCnt = 0;
+  remain = 1;
 
   generate('top');
   generate('left');
@@ -28,22 +33,34 @@ function init(){
 
   $('#centerCardArea').text(0);
   $(".cardClickArea").on("tap",cardClickListener);
-  $('.cardClickArea').click(cardClickListener);
+  // $('.cardClickArea').click(cardClickListener);
 
   $('body').keydown(function(e){
     e.preventDefault();
     switch (e.keyCode) {
       case 37:
           doMoveIfAble('left')
+          if($('#stackCount').text() == 1) {
+  			AutoStart();
+  		  }
           break;
       case 38:
           doMoveIfAble('top');
+          if($('#stackCount').text() == 1) {
+  			AutoStart();
+  		  }
           break;
       case 39:
           doMoveIfAble('right');
+          if($('#stackCount').text() == 1) {
+  			AutoStart();
+  		  }
           break;
       case 40:
           doMoveIfAble('bottom');
+          if($('#stackCount').text() == 1) {
+  			AutoStart();
+  		  }
     }
   });
   initTimer();
@@ -56,6 +73,10 @@ function cardClickListener(){
   else if($(this).hasClass('bottomCard')) { dir = 'bottom'; }
 
   doMoveIfAble(dir);
+  if($('#stackCount').text() == 1) {
+  	AutoStart();
+  }
+  console.log($('#stackCount').text());
 }
 
 function generate(dir){
@@ -79,11 +100,14 @@ function getRanNum(start, end){
 function addScore(){
   $('#stackCount').text(parseInt($('#stackCount').text())+1);
   $('#centerCardArea').text(parseInt($('#centerCardArea').text())+1);
+  LifeRecovery();
+  console.log(remain);
 }
 
 function addError(){
   $('#errorCount').text(parseInt($('#errorCount').text())+1);
   $('#centerCardArea').text(0);
+
 }
 
 function isDisabled(dir){
@@ -91,27 +115,30 @@ function isDisabled(dir){
 }
 
 function doMoveIfAble(dir){
-  if(dir && !isDisabled(dir)){
-    var targetCard = $('.cardImageDiv.'+dir+'Card');
-    var targetNum = parseInt($(targetCard).attr('class').replace(/[a-z]/gi, ""));
-    if(!isCorrect(targetNum)){
-      addError();
-      return;
-    }
-    disabled.push(dir);
-    var cssObj = {opacity: 0};
-    if(dir == 'top' || dir == 'bottom') cssObj.top = "188px";
-    if(dir == 'left' || dir == 'right') cssObj.left = "200px";
+	if(gameMode == "on"){
+	  if(dir && !isDisabled(dir)){
+	    var targetCard = $('.cardImageDiv.'+dir+'Card');
+	    var targetNum = parseInt($(targetCard).attr('class').replace(/[a-z]/gi, ""));
+	    if(!isCorrect(targetNum)){
+	      addError();
+//	      LifeDecreation();
+	      return;
+	    }
+	    disabled.push(dir);
+	    var cssObj = {opacity: 0};
+	    if(dir == 'top' || dir == 'bottom') cssObj.top = "188px";
+	    if(dir == 'left' || dir == 'right') cssObj.left = "200px";
 
-    curCardNums.splice(curCardNums.indexOf(targetNum), 1);
-    decCardNum(1);
-    addScore();
-    generate(dir);
-    $(targetCard).animate(cssObj, disableTime, function() {
-      disabled.splice(disabled.indexOf(dir), 1);
-      $(targetCard).remove();
-    });
-  };
+	    curCardNums.splice(curCardNums.indexOf(targetNum), 1);
+	    decCardNum(1);
+	    addScore();
+	    generate(dir);
+	    $(targetCard).animate(cssObj, disableTime, function() {
+	      disabled.splice(disabled.indexOf(dir), 1);
+	      $(targetCard).remove();
+	    });
+	  };
+	}
 }
 
 function isCorrect(targetNum){
@@ -140,38 +167,111 @@ function decCardNum(num){
 }
 
 
-// var seconds = 0, minutes = 0, hours = 0, timerEvent;
-//
-// function addSecond() {
-//   seconds++;
-//   if (seconds >= 60) {
-//       seconds = 0;
-//       minutes++;
-//       if (minutes >= 60) {
-//           minutes = 0;
-//           hours++;
-//       }
-//   }
-//   var textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" +
-//                     (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
-//                     (seconds > 9 ? seconds : "0" + seconds);
-//   setTimer(textContent);
-//   console.log(textContent);
-//   startTimer();
-// }
-// function startTimer() {
-//   console.log("asdf");
-//   timerEvent = setTimeout(addSecond, 1000);
-// }
-// function initTimer(){
-//   $('#startTimer').click(startTimer);
-//   $('#stopTimer').click(function(){ clearTimeout(timerEvent); });
-//   $('#clearTimer').click(function() {
-//     clearTimeout(timerEvent);
-//     setTimer("00:00:00");
-//     seconds = 0; minutes = 0; hours = 0;
-//   });
-// }
-// function setTimer(string){
-//   $('#timer time').text(string);
-// }
+var seconds = 0, minutes = 1, hours = 0, timerEvent;
+/*
+function addSecond() {
+  seconds++;
+  if (seconds >= 60) {
+      seconds = 0;
+      minutes++;
+      if (minutes >= 60) {
+          minutes = 0;
+          hours++;
+      }
+  }
+  var textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" +
+                    (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
+                    (seconds > 9 ? seconds : "0" + seconds);
+  setTimer(textContent);
+  console.log(textContent);
+  startTimer();
+}
+*/
+function startTimer() {
+
+  /*
+  timerEvent = setTimeout(addSecond, 1000);
+  */
+
+  // 시간초 모드 작성
+  timerEvent = setTimeout(decSecond, 1000);
+}
+
+function initTimer(){
+  $('#startTimer').click(startTimer);
+  $('#stopTimer').click(function(){ clearTimeout(timerEvent); });
+  $('#clearTimer').click(function() {
+    clearTimeout(timerEvent);
+    setTimer("00:01:00");
+    seconds = 0; minutes = 1; hours = 0;
+    gameMode = 'on';
+    $('#stackCount').text(0);
+    $('#errorCount').text(0);
+    $('#centerCardArea').text(0);
+  });
+}
+function setTimer(string){
+  $('#timer time').text(string);
+}
+
+function decSecond() {
+
+  if (seconds <= 0) {
+  	  /*
+      seconds = 59;
+      minutes--;
+      */
+      if (minutes <= 0) {
+      	  if (hours == 0) {
+      	  	  gameMode = 'off';
+      	  	  console.log($('#stackCount').text());
+      	  	  if($('#stackCount').text() >= 60){
+      	  	  	 $('#centerCardArea').text("Clear");
+      	  	  }
+      	  	  else {
+      	  	  	 $('#centerCardArea').text("Lose");
+      	  	  }
+      	  }
+      	  else if(hours > 0) {
+      	  	  hours--;
+      	  	  minutes = 59;
+      	  	  seconds = 60;
+      	  	  seconds--;
+      	  }
+      }
+      else if(minutes > 0) {
+      	  minutes--;
+      	  seconds = 60;
+      	  seconds--;
+      	  }
+   }
+   else if (seconds > 0)
+   {
+   seconds--;
+   }
+
+
+
+  var textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" +
+                    (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" +
+                    (seconds > 9 ? seconds : "0" + seconds);
+  setTimer(textContent);
+  console.log(textContent);
+  startTimer();
+}
+
+function AutoStart() {
+	initTimer();
+	startTimer();
+}
+
+function LifeRecovery() {
+	remain = ($('#stackCount').text()) % 3;
+	if(remain == 00) {
+		seconds++;
+		}
+}
+
+function LifeDecreation() {
+	seconds--;
+}
