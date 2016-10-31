@@ -21,9 +21,9 @@
     </div>
     <div id="errorArea">Miss : <span id="errorCount">0</span></div>
     <div id="stackArea">Stack : <span id="stackCount">0</span></div>
-    <!-- <h1 id="timer"><time>00:00:00</time></h1>
+    <h1 id="timer"><time>00:03:00</time></h1>
     <div class="timerController" id="startTimer">start</div>
     <div class="timerController" id="stopTimer">stop</div>
-    <div class="timerController" id="clearTimer">clear</div> -->
+    <div class="timerController" id="clearTimer">clear</div>
   </body>
 </html>
