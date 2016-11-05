@@ -56,6 +56,9 @@
 #stackArea{
   font-size: 40px;
 }
+#scoreArea{
+  font-size: 40px;
+}
 
 .timerController{
   display: inline-block;

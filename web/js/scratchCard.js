@@ -7,6 +7,8 @@ var disableTime;
 var gameMode;
 var errorCnt;
 var remain;
+var point;
+var missionResult;
 
 // 게임 작동에 관한 모드 설정
 
@@ -25,6 +27,8 @@ function init(){
   gameMode = 'on';
   errorCnt = 0;
   remain = 1;
+  point = 0
+  missionResult = 'fail';
 
   generate('top');
   generate('left');
@@ -100,6 +104,9 @@ function getRanNum(start, end){
 function addScore(){
   $('#stackCount').text(parseInt($('#stackCount').text())+1);
   $('#centerCardArea').text(parseInt($('#centerCardArea').text())+1);
+  PointCalc();
+  MissionSetting();
+  $('#scoreCount').text(point);
   LifeRecovery();
   console.log(remain);
 }
@@ -121,7 +128,7 @@ function doMoveIfAble(dir){
 	    var targetNum = parseInt($(targetCard).attr('class').replace(/[a-z]/gi, ""));
 	    if(!isCorrect(targetNum)){
 	      addError();
-//	      LifeDecreation();
+	      LifeDecreation();
 	      return;
 	    }
 	    disabled.push(dir);
@@ -188,6 +195,7 @@ function addSecond() {
 }
 */
 function startTimer() {
+//  console.log("asdf");
 
   /*
   timerEvent = setTimeout(addSecond, 1000);
@@ -208,6 +216,8 @@ function initTimer(){
     $('#stackCount').text(0);
     $('#errorCount').text(0);
     $('#centerCardArea').text(0);
+    $('#scoreCount').text(0);
+    point = 0;
   });
 }
 function setTimer(string){
@@ -225,7 +235,7 @@ function decSecond() {
       	  if (hours == 0) {
       	  	  gameMode = 'off';
       	  	  console.log($('#stackCount').text());
-      	  	  if($('#stackCount').text() >= 60){
+      	  	  if(missionResult == "success"){
       	  	  	 $('#centerCardArea').text("Clear");
       	  	  }
       	  	  else {
@@ -274,4 +284,65 @@ function LifeRecovery() {
 
 function LifeDecreation() {
 	seconds--;
+	seconds--;
+}
+
+function PointCalc(){
+	if($('#centerCardArea').text()>=1 && $('#centerCardArea').text()<=10)
+	{
+		point += 100;
+	}
+	else if($('#centerCardArea').text()>=11 && $('#centerCardArea').text() <=20)
+	{
+		point += 110;
+	}
+	else if($('#centerCardArea').text()>=21 && $('#centerCardArea').text() <=30)
+	{
+		point += 120;
+	}
+	else if($('#centerCardArea').text()>=31 && $('#centerCardArea').text() <=40)
+	{
+		point += 130;
+	}
+	else if($('#centerCardArea').text()>=41 && $('#centerCardArea').text() <=50)
+	{
+		point += 140;
+	}
+	else if($('#centerCardArea').text()>=51 && $('#centerCardArea').text() <=60)
+	{
+		point += 150;
+	}
+	else if($('#centerCardArea').text()>=61 && $('#centerCardArea').text() <=70)
+	{
+		point += 160;
+	}
+	else if($('#centerCardArea').text()>=71 && $('#centerCardArea').text() <=80)
+	{
+		point += 170;
+	}
+	else if($('#centerCardArea').text()>=81 && $('#centerCardArea').text() <=90)
+	{
+		point += 180;
+	}
+	else if($('#centerCardArea').text()>=91 && $('#centerCardArea').text() <=100)
+	{
+		point += 190;
+	}
+	else if($('#centerCardArea').text()>=101)
+	{
+		point += 200;
+	}
+}
+
+function MissionSetting(){
+	if($('#centerCardArea').text()>=70)
+	{
+		gameMode = 'off';
+		console.log(point);
+		console.log(gameMode);
+		clearTimeout(timerEvent);
+		point += seconds * 1000;
+		$('#centerCardArea').text("Clear");
+		missionResult = 'success';
+	}
 }
